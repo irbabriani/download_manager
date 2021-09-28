@@ -1,8 +1,8 @@
-# my_flutter_structure
+
 
 With flutter_base_project you can create a multilingual, Authenticated system, handle you're APIs, and routing navigation pages app. I use bloc, flutter_bloc, flutter_secure_storage, dio and flutter_translate.
 
-## Getting Started
+
 
 This project is a starting point for a Flutter application.
 
