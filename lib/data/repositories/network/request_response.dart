@@ -6,11 +6,11 @@ class RequestResponse<T> {
   ErrorStatus errorStatus;
   T result;
   String errorMessage;
-  Exception exception;
+  late Exception exception;
   RequestResponse(
-      {this.isDone,
-        this.statusCode,
-        this.errorStatus,
-        this.result,
-        this.errorMessage});
+      {required this.isDone,
+        required this.statusCode,
+        required this.errorStatus,
+        required this.result,
+        required this.errorMessage});
 }

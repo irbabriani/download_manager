@@ -29,11 +29,11 @@ class NetworkRequest {
   final String plainBody;
 
   NetworkRequest(this.type, this.address,
-      {@required this.dio,
+      {required this.dio,
       this.body,
-      this.plainBody,
-      this.listBody,
-      this.headers});
+      required this.plainBody,
+      required this.listBody,
+      required this.headers});
 
   Future<RequestResponse> getResult() async {
     Response response;
