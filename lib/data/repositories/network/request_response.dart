@@ -1,9 +1,9 @@
 enum ErrorStatus { systemError, httpError }
 
 class RequestResponse<T> {
-  bool isDone;
-  int statusCode;
-  ErrorStatus errorStatus;
+  bool isDone=false;
+  int? statusCode;
+  ErrorStatus? errorStatus;
   T result;
   String errorMessage;
   late Exception exception;

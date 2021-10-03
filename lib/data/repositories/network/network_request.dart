@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:my_flutter_structure/data/error/exceptions.dart';
 import 'package:my_flutter_structure/data/repositories/network/request_response.dart';
@@ -36,39 +33,44 @@ class NetworkRequest {
       required this.headers});
 
   Future<RequestResponse> getResult() async {
-    Response response;
+    late Response response;
     headers ??= _jsonHeaders;
     try {
       switch (type) {
         case RequestType.post:
-          response = await dio.post(
-            address,
-            options: Options(headers: headers),
-            data: plainBody ?? body ?? listBody
-          );
+          var response = await dio.post(address,
+              options: Options(headers: headers),
+              data: plainBody ?? body ?? listBody);
           break;
         case RequestType.get:
-          response = await dio.get(address,
-            options: Options(headers: headers),);
+          response = await dio.get(
+            address,
+            options: Options(headers: headers),
+          );
           break;
         case RequestType.put:
-          response = await dio.put(address,
-              data: body ?? plainBody ?? listBody,
-            options: Options(headers: headers),);
+          response = await dio.put(
+            address,
+            data: body ?? plainBody ?? listBody,
+            options: Options(headers: headers),
+          );
           break;
         case RequestType.delete:
-          response = await dio.delete(address,
-            options: Options(headers: headers),);
+          response = await dio.delete(
+            address,
+            options: Options(headers: headers),
+          );
           break;
       }
-
       if (response.statusCode != STATUS_OK) {
         throw HttpRequestException();
       }
-      var res = jsonEncode(response.data);
-      // print(res);
-      return new RequestResponse(
-          isDone: true, statusCode: response.statusCode, result: response.data);
+      return RequestResponse(
+          isDone: true,
+          statusCode: response.statusCode,
+          result: response.data,
+          errorMessage: '',
+          errorStatus: null);
     } catch (exception) {
       if (exception is HttpRequestException) {
         return RequestResponse(
@@ -76,13 +78,15 @@ class NetworkRequest {
             statusCode: response.statusCode,
             errorStatus: ErrorStatus.httpError,
             errorMessage:
-                response.statusCode.toString() + " : " + response.data);
+                response.statusCode.toString() + " : " + response.data,
+            result: null);
       } else {
         return RequestResponse(
             isDone: false,
             statusCode: -1,
             errorStatus: ErrorStatus.systemError,
-            errorMessage: "System Error :" + exception.toString());
+            errorMessage: "System Error :" + exception.toString(),
+            result: null);
       }
     }
   }
