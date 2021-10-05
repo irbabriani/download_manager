@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:my_flutter_structure/presentation/authentication/authentication_cubit.dart';
 
 class SimpleBlocDelegate extends BlocObserver {
   @override
@@ -43,8 +44,12 @@ void main() async {
   );
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocDelegate();
-  runApp(BlocProvider<>(
-    create:,
+  runApp(BlocProvider<AuthenticationCubit>(
+    create: (context) => AuthenticationCubit()..appStarted(),
+    child:  LocalizedApp(
+      delegate,
+      MyFlutterStructure(),
+    ),
   ));
 }
 

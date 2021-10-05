@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:my_flutter_structure/config/storage.dart';
 
 import 'package:equatable/equatable.dart';
+import 'package:my_flutter_structure/domain/entities/user_info_entity.dart';
 
 part 'authentication_state.dart';
 
@@ -12,12 +13,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit() : super(Uninitialized());
   Future appStarted() async {
     var userInfo = await getToken();
-    if(userInfo.userId!=null){
-      if (userInfo.emailConfirmed == true) {
-        emit(Authenticated());
-      } else {
-        emit(Unauthenticated());
-      }
+    if(userInfo.token!=""){
+      emit(Authenticated());
     }else{
       emit(Unauthenticated());
     }
@@ -59,7 +56,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       var userInfo =UserInfoEntity.fromJson(json.decode(userInfoStr));
       return userInfo;
     }else{
-      return UserInfoEntity();
+      return UserInfoEntity(token: '',selectedTheme: '',selectedLanguage: '',role: '',firstName: '',lastName: '');
     }
   }
 }
