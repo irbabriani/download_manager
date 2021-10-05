@@ -1,0 +1,6 @@
+{
+  "app_bar": {
+    "main": {"title": "Main Page"},
+    "login": "Login"
+  }
+}

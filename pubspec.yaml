@@ -24,3 +24,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/i18n/
+  fonts:
+    - family: Lobster-Regular
+      fonts:
+        - asset: assets/fonts/en/Lobster-Regular.ttf
+    - family: Lobster-Regular
+      fonts:
+        - asset: assets/fonts/en/Roboto-Regular.ttf
