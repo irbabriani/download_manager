@@ -2,5 +2,10 @@
   "app_bar": {
     "main": {"title": "Main Page"},
     "login": "Login"
+  },
+  "dashboard": {
+    "app_bar": {
+      "title": "Dashboard"
+    }
   }
 }

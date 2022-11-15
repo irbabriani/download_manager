@@ -1,9 +1,9 @@
-name: my_flutter_structure
-description: With flutter_base_project you can create a multilingual, Authenticated system, handle you're APIs, and routing navigation pages app. I use bloc, flutter_bloc, flutter_secure_storage, dio and flutter_translate.
+name: download_manager
+description: A cross platform download manager.
 publish_to: 'none'
-version: 1.0.0+1
+version: 0.0.1
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.18.4 <3.0.0'
 dependencies:
   flutter:
     sdk: flutter
@@ -13,23 +13,29 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
-  flutter_secure_storage: ^4.2.1
-  dio: ^4.0.0
+  flutter_lints: ^2.0.1
+  flutter_secure_storage: ^6.0.0
+  dio: ^4.0.6
+  http: ^0.13.5
   data_connection_checker: ^0.3.4
-  bloc: ^7.2.1
-  flutter_bloc: ^7.3.0
+  bloc: ^8.1.0
+  flutter_bloc: ^8.1.1
   equatable: ^2.0.3
-  flutter_translate: ^3.0.1
+  flutter_translate: ^4.0.3
+  shared_preferences: ^2.0.15
+  path_provider: ^2.0.11
 
 flutter:
   uses-material-design: true
   assets:
     - assets/i18n/
   fonts:
-    - family: Lobster-Regular
+    - family: arlrdbd
       fonts:
-        - asset: assets/fonts/en/Lobster-Regular.ttf
-    - family: Lobster-Regular
+        - asset: assets/fonts/en/arlrdbd.ttf
+    - family: bahnschrift
       fonts:
-        - asset: assets/fonts/en/Roboto-Regular.ttf
+        - asset: assets/fonts/en/bahnschrift.ttf
+    - family: irSans
+      fonts:
+        - asset: assets/fonts/fa/IRANSansMobile.ttf

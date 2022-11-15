@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_flutter_structure/presentation/screens/sign_up/cubit/sign_up_cubit.dart';
+import 'package:download_manager/presentation/screens/sign_up/cubit/sign_up_cubit.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:my_flutter_structure/data/error/exceptions.dart';
-import 'package:my_flutter_structure/data/repositories/network/request_response.dart';
+import 'package:download_manager/data/error/exceptions.dart';
+import 'package:download_manager/data/repositories/network/request_response.dart';
 
 enum RequestType {
   post,

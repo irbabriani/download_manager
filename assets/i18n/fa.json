@@ -2,5 +2,10 @@
   "app_bar": {
     "main": {"title": "صفحه اصلی"},
     "login": "ورود"
+  },
+  "dashboard": {
+    "app_bar": {
+      "title": "پیش خوان"
+    }
   }
 }

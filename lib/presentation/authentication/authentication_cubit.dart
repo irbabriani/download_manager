@@ -2,10 +2,10 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:my_flutter_structure/config/storage.dart';
+import 'package:download_manager/config/storage.dart';
 
 import 'package:equatable/equatable.dart';
-import 'package:my_flutter_structure/domain/entities/user_info_entity.dart';
+import 'package:download_manager/domain/entities/user_info_entity.dart';
 
 part 'authentication_state.dart';
 

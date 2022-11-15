@@ -3,48 +3,21 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:my_flutter_structure/config/app_routes.dart';
-import 'package:my_flutter_structure/config/app_theme.dart';
-import 'package:my_flutter_structure/presentation/authentication/authentication_cubit.dart';
-import 'package:my_flutter_structure/presentation/screens/dashboard/cubit/dashboard_cubit.dart';
-import 'package:my_flutter_structure/presentation/screens/dashboard/dashboard.dart';
-import 'package:my_flutter_structure/presentation/screens/sign_up/cubit/sign_up_cubit.dart';
-import 'package:my_flutter_structure/presentation/screens/sign_up/sign_up.dart';
-import 'package:my_flutter_structure/presentation/screens/sing_in/cubit/sign_in_cubit.dart';
-import 'package:my_flutter_structure/presentation/screens/sing_in/sign_in.dart';
-import 'package:my_flutter_structure/presentation/screens/splash/splash.dart';
 
-class SimpleBlocDelegate extends BlocObserver {
-  @override
-  void onEvent(Bloc bloc, Object? event) {
-    super.onEvent(bloc, event);
-  }
+import 'package:shared_preferences/shared_preferences.dart';
 
-  @override
-  void onChange(BlocBase bloc, Change change) {
-    super.onChange(bloc, change);
-  }
+import 'package:download_manager/config/app_routes.dart';
+import 'package:download_manager/config/app_theme.dart';
+import 'package:download_manager/presentation/authentication/authentication_cubit.dart';
+import 'package:download_manager/presentation/screens/dashboard/cubit/dashboard_cubit.dart';
+import 'package:download_manager/presentation/screens/dashboard/dashboard.dart';
+import 'package:download_manager/presentation/screens/sign_up/cubit/sign_up_cubit.dart';
+import 'package:download_manager/presentation/screens/sign_up/sign_up.dart';
+import 'package:download_manager/presentation/screens/sing_in/cubit/sign_in_cubit.dart';
+import 'package:download_manager/presentation/screens/sing_in/sign_in.dart';
+import 'package:download_manager/presentation/screens/splash/splash.dart';
 
-  @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    super.onError(bloc, error, stackTrace);
-  }
-
-  @override
-  void onClose(BlocBase bloc) {
-    super.onClose(bloc);
-  }
-
-  @override
-  void onCreate(BlocBase bloc) {
-    super.onCreate(bloc);
-  }
-
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-  }
-}
+class SimpleBlocDelegate extends BlocObserver {}
 
 void main() async {
   var delegate = await LocalizationDelegate.create(
@@ -57,19 +30,23 @@ void main() async {
     create: (context) => AuthenticationCubit()..appStarted(),
     child:  LocalizedApp(
       delegate,
-      MyFlutterStructure(),
+      const DownloadManager(),
     ),
   ));
 }
-
-class MyFlutterStructure extends StatefulWidget {
+class DownloadManager extends StatefulWidget {
+  const DownloadManager({Key? key}) : super(key: key);
   @override
-  _MyFlutterStructureState createState() => _MyFlutterStructureState();
+  State<DownloadManager> createState() => _DownloadManagerState();
 }
 
-class _MyFlutterStructureState extends State<MyFlutterStructure> {
+class _DownloadManagerState extends State<DownloadManager> {
   @override
   Widget build(BuildContext context) {
+    SharedPreferences.getInstance().then((instance) {
+      String locale = instance.get('locale').toString() ?? 'fa';
+      changeLocale(context, 'fa');
+    });
     var localizationDelegate = LocalizedApp.of(context).delegate;
     return LocalizationProvider(
       state: LocalizationProvider.of(context).state,
@@ -77,6 +54,7 @@ class _MyFlutterStructureState extends State<MyFlutterStructure> {
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
           localizationDelegate,
         ],
         onGenerateRoute: _registerRoutesWithParameters,
@@ -95,7 +73,7 @@ class _MyFlutterStructureState extends State<MyFlutterStructure> {
         return MaterialPageRoute(
           settings: settings,
           builder: (context) {
-            return Text("");
+            return _buildDashboardCubit();
           },
         );
       default:
@@ -110,7 +88,7 @@ class _MyFlutterStructureState extends State<MyFlutterStructure> {
   }
   Map<String, WidgetBuilder> _registerRoutes() {
     return <String, WidgetBuilder>{
-      AppRoutes.splash: (context) => SplashScreen(),
+      AppRoutes.splash: (context) => const SplashScreen(),
       AppRoutes.signIn: (context) => _buildSignInBloc(),
       AppRoutes.signUp: (context) => _buildSignUpBloc(),
       AppRoutes.authPath: (context) =>

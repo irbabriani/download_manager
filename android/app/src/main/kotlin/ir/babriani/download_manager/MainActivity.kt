@@ -1,4 +1,4 @@
-package com.babriani.my_flutter_structure.my_flutter_structure
+package ir.babriani.download_manager
 
 import io.flutter.embedding.android.FlutterActivity
 
