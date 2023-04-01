@@ -12,10 +12,10 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   var txte = TextEditingController(
-    text: "https://dl2.soft98.ir/soft/a/AnyDesk.7.1.6.zip"
-  );
+      text: "https://dl3.ssd8ergssdg15dsfdga6bv8aj.xyz/film/1399/08/Shutter.Island.2010/Shutter.Island.2010.720p.BluRay.x264.YTS.SoftSub.AvaMovie.mkv");
   double _currentSliderValue = 0;
   int splits = 1;
+  final List<Widget> rowList = [];
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DashboardCubit, DashboardState>(
@@ -42,25 +42,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onChanged: (double value) {
                       setState(() {
                         _currentSliderValue = value;
-                        splits = [1, 2, 4, 8, 16, 24, 32][_currentSliderValue.round()];
+                        splits = [
+                          1,
+                          2,
+                          4,
+                          8,
+                          16,
+                          24,
+                          32
+                        ][_currentSliderValue.round()];
+                        calculateListOfStars(splits);
                       });
                     },
                   ),
                   Text("$splits")
                 ],
               ),
-              TextButton(onPressed: () {
-                var uri= Uri.parse(txte.text);
-                context.read<DashboardCubit>().download(uri, splits);
-              }, child: Text("Download")),
-              TextButton(onPressed: () {
-                var uri= Uri.parse(txte.text);
-                context.read<DashboardCubit>().createFile(splits);
-              }, child: Text("Create File"))
+              Column(
+                children: rowList,
+              ),
+              TextButton(
+                  onPressed: () {
+                    var uri = Uri.parse(txte.text);
+                    context.read<DashboardCubit>().download(uri, splits);
+                  },
+                  child: Text("Download")),
+              TextButton(
+                  onPressed: () {
+                    var uri = Uri.parse(txte.text);
+                    context.read<DashboardCubit>().createFile(splits);
+                  },
+                  child: Text("Create File"))
             ],
           ),
         );
       },
     );
+  }
+
+  calculateListOfStars(int length) {
+    rowList.clear();
+    for(int i=0; i<=length;i++){
+      rowList.add(
+        LinearProgressIndicator(
+          color: Colors.primaries[math.Random().nextInt(Colors.primaries.length)],
+        )
+      );
+    }
   }
 }

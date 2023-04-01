@@ -182,6 +182,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  hive:
+    dependency: "direct dev"
+    description:
+      name: hive
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.3"
   http:
     dependency: "direct dev"
     description:
