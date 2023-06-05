@@ -1,33 +1,35 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import 'dart:io';
+import 'dart:typed_data' as typedData;
 import 'dart:isolate';
-
-import 'package:bloc/bloc.dart';
 import 'package:download_manager/presentation/screens/needed_packages.dart';
 import 'package:equatable/equatable.dart';
 
 part 'dashboard_state.dart';
 
-class DashboardCubit extends Cubit<DashboardState> {
+class DashboardCubit extends Cubit<DownloadState> {
   DashboardCubit() : super(DashboardInitial());
 
   createFile(int split) async {
     Directory directory = await getApplicationDocumentsDirectory();
-    var b = BytesBuilder();
+    var byteBuilder = typedData.BytesBuilder();
     for (int i = 0; i < split; i++) {
       final File file = File('${directory.path}/my_file$i.txt');
-      var ress = await file.readAsBytes();
-      b.add(ress);
+      var readAsBytes = await file.readAsBytes();
+      byteBuilder.add(readAsBytes);
     }
     final File newFile = File('${directory.path}/new_file.zip');
-    await newFile.writeAsBytes(b.toBytes());
+    await newFile.writeAsBytes(byteBuilder.toBytes());
   }
 
   download(Uri uri, int split) async {
+    var listDownload = <DownloadInProgress>[];
+    for(int i=0;i<32;i++){
+      listDownload.add(DownloadInProgress(index: i,percent: 0));
+    }
     Directory directory = await getApplicationDocumentsDirectory();
     int length = await getUirInfo(uri);
     var divided = length ~/ split;
@@ -49,7 +51,10 @@ class DashboardCubit extends Cubit<DashboardState> {
         await Isolate.spawn(shredder, shredderModel);
       }
       port.listen((message) {
-        print(message);
+        ShredderDownload downloadModel=message;
+        listDownload[downloadModel.partNumber]=DownloadInProgress(index: downloadModel.partNumber,percent: downloadModel.percentage);
+        emit(DownloadInitial(progress: listDownload));
+        // print('${downloadModel.partNumber}=>${downloadModel.percentage}');
       });
     }
   }
@@ -81,7 +86,8 @@ class DashboardCubit extends Cubit<DashboardState> {
         final downloadedLength = bytes.length;
         var progress =
             (downloadedLength.toDouble() / (contentLength ?? 1) * 100).round();
-        shredder.sendPort.send("${shredder.i}=>$progress");
+        var downloadModel=ShredderDownload(partNumber: shredder.i,percentage: progress);
+        shredder.sendPort.send(downloadModel);
       },
       onDone: () async {
         final File file =
@@ -109,11 +115,18 @@ class ShredderModel {
   final int i;
   final Directory directory;
 
-  ShredderModel(
-      {required this.sendPort,
-      required this.url,
-      required this.fromByte,
-      required this.toByte,
-      required this.i,
-      required this.directory});
+  ShredderModel({
+    required this.sendPort,
+    required this.url,
+    required this.fromByte,
+    required this.toByte,
+    required this.i,
+    required this.directory,
+  });
+}
+class ShredderDownload{
+  final int partNumber;
+  final int percentage;
+
+  ShredderDownload({required this.partNumber, required this.percentage});
 }

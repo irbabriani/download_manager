@@ -9,17 +9,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:download_manager/config/app_routes.dart';
 import 'package:download_manager/config/app_theme.dart';
 import 'package:download_manager/presentation/authentication/authentication_cubit.dart';
-import 'package:download_manager/presentation/screens/dashboard/cubit/dashboard_cubit.dart';
-import 'package:download_manager/presentation/screens/dashboard/dashboard.dart';
+import 'package:download_manager/presentation/screens/download/cubit/download_cubit.dart';
+import 'package:download_manager/presentation/screens/download/download.dart';
 import 'package:download_manager/presentation/screens/sign_up/cubit/sign_up_cubit.dart';
 import 'package:download_manager/presentation/screens/sign_up/sign_up.dart';
 import 'package:download_manager/presentation/screens/sing_in/cubit/sign_in_cubit.dart';
 import 'package:download_manager/presentation/screens/sing_in/sign_in.dart';
 import 'package:download_manager/presentation/screens/splash/splash.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class SimpleBlocDelegate extends BlocObserver {}
 
 void main() async {
+  await Hive.initFlutter();
   var delegate = await LocalizationDelegate.create(
     fallbackLocale: 'en_US',
     supportedLocales: ['en_US', 'fa'],
@@ -80,7 +82,7 @@ class _DownloadManagerState extends State<DownloadManager> {
         return MaterialPageRoute(
           settings: settings,
           builder: (context) {
-            return Text("");
+            return const Text("");
           },
         );
 
@@ -110,10 +112,10 @@ class _DownloadManagerState extends State<DownloadManager> {
       child: SignInScreen(),
     );
   }
-  BlocProvider<DashboardCubit> _buildDashboardCubit() {
-    return BlocProvider<DashboardCubit>(
-      create: (context) => DashboardCubit(),
-      child: DashboardScreen(),
+  BlocProvider<DownloadCubit> _buildDashboardCubit() {
+    return BlocProvider<DownloadCubit>(
+      create: (context) => DownloadCubit(context.read()),
+      child: const DownloadScreen(),
     );
   }
   BlocProvider<SignUpCubit> _buildSignUpBloc() {

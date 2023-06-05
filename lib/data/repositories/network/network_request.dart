@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:download_manager/data/error/exceptions.dart';
+import 'package:download_manager/data/models/error/exceptions.dart';
 import 'package:download_manager/data/repositories/network/request_response.dart';
 
 enum RequestType {

@@ -1,6 +1,5 @@
 import 'package:download_manager/presentation/screens/needed_packages.dart';
 import 'package:download_manager/presentation/screens/dashboard/cubit/dashboard_cubit.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:math' as math;
 
 class DashboardScreen extends StatefulWidget {
@@ -11,15 +10,19 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  var txte = TextEditingController(
-      text: "https://dl3.ssd8ergssdg15dsfdga6bv8aj.xyz/film/1399/08/Shutter.Island.2010/Shutter.Island.2010.720p.BluRay.x264.YTS.SoftSub.AvaMovie.mkv");
+  var fileUrl = TextEditingController(
+      text: "https://dl2.soft98.ir/soft/j-k-l/LeoMoon.ParsiNegar.2.1.9.Win.rar?1684238532");
   double _currentSliderValue = 0;
   int splits = 1;
   final List<Widget> rowList = [];
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DashboardCubit, DashboardState>(
-      listener: (context, state) {},
+    return BlocConsumer<DashboardCubit, DownloadState>(
+      listener: (context, state) {
+        if(state is DownloadInitial){
+          print(state.progress[0].percent);
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -28,7 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           body: Column(
             children: [
               TextField(
-                controller: txte,
+                controller: fileUrl,
               ),
               Row(
                 children: [
@@ -63,13 +66,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               TextButton(
                   onPressed: () {
-                    var uri = Uri.parse(txte.text);
+                    var uri = Uri.parse(fileUrl.text);
                     context.read<DashboardCubit>().download(uri, splits);
                   },
                   child: Text("Download")),
               TextButton(
                   onPressed: () {
-                    var uri = Uri.parse(txte.text);
+                    var uri = Uri.parse(fileUrl.text);
                     context.read<DashboardCubit>().createFile(splits);
                   },
                   child: Text("Create File"))
